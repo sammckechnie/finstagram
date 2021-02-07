@@ -7,7 +7,8 @@ class FinstagramPost < ActiveRecord::Base
   validates_presence_of :user
 
   def humanized_time_ago
-    time_ago_in_seconds = Time.now - self.created_at
+    
+     time_ago_in_seconds = Time.now - self.created_at
     time_ago_in_minutes = time_ago_in_seconds / 60
 
 #Days ago
@@ -16,17 +17,17 @@ class FinstagramPost < ActiveRecord::Base
 
 #Two or more hour(s)
       elsif time_ago_in_minutes >= 120
-      "#{(time_ago_in_minutes / 60).to_i} hours ago"
-      
+      "#{(time_ago_in_minutes / 60).to_i} Hours ago"
+
 #one "hour" ago
       elsif time_ago_in_minutes >= 60
-      "#{(time_ago_in_minutes / 60).to_i} hour ago"
+      "#{(time_ago_in_minutes / 60).to_i} Hour ago"
 
     elsif time_ago_in_minutes <= 60 && time_ago_in_minutes >=1
-      "#{(time_ago_in_minutes.to_i)} minutes ago"
+      "#{(time_ago_in_minutes.to_i)} Minutes ago"
 
     else
-      "#{(time_ago_in_minutes * 60).to_i} seconds ago"
+      "#{(time_ago_in_minutes * 60).to_i} Seconds ago"
     end
   end
   # New Stuff Start 
