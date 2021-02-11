@@ -5,9 +5,10 @@ class FinstagramPost < ActiveRecord::Base
   has_many :likes
 
   validates_presence_of :user
-
+  validates :photo_url, :user, presence: true
   def humanized_time_ago
-    # (time_ago_in_seconds = self.created_at - 60).to_s)
+  ##### time_ago_in_seconds = (Time.now - Time.parse((Time.now - 0.5).to_s)).to_i
+    
    time_ago_in_seconds = Time.now - self.created_at
     time_ago_in_minutes = time_ago_in_seconds / 60
 
@@ -24,7 +25,9 @@ class FinstagramPost < ActiveRecord::Base
       "#{(time_ago_in_minutes / 60).to_i} Hour ago"
 
     elsif time_ago_in_minutes <= 60 && time_ago_in_minutes >=1
-      "#{(time_ago_in_minutes.to_i)} Minutes ago"
+      time_ago_in_minutes == 1 ?
+       "#{(time_ago_in_minutes.to_i)} Minute ago" :
+        "#{(time_ago_in_minutes.to_i)} Minutes ago"
 
     else
       "#{(time_ago_in_minutes * 60).to_i} Seconds ago"
@@ -32,7 +35,7 @@ class FinstagramPost < ActiveRecord::Base
   end
   # New Stuff Start 
   def like_count
-    self.likes.size
+   self.likes.size
   end
 
   def comment_count
