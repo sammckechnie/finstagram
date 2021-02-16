@@ -42,7 +42,7 @@ post '/login' do
 
   if @user && @user.password == password
     session[:user_id] = @user.id
-    "Success! User with id #{session[:user_id]} is logged in!"
+    redirect to("/")
   else
     @error_message = "Login failed."
     erb(:login)
@@ -57,6 +57,36 @@ end
 get '/signup' do     # if a user navigates to the path "/signup",
   @user = User.new   # setup empty @user object
   erb(:signup)       # render "app/views/signup.erb"
+end
+
+post '/likes' do
+  finstagram_post_id = params[:finstagram_post_id]
+
+  like = Like.new({ finstagram_post_id: finstagram_post_id, user_id: current_user.id })
+  like.save
+
+  redirect(back)
+end
+
+delete '/likes/:id' do
+  like = Like.find(params[:id])
+  like.destroy
+  redirect(back)
+end
+
+post '/comments' do
+  # point values from params to variables
+  text = params[:text]
+  finstagram_post_id = params[:finstagram_post_id]
+
+  # instantiate a comment with those values & assign the comment to the `current_user`
+  comment = Comment.new({ text: text, finstagram_post_id: finstagram_post_id, user_id: current_user.id })
+
+  # save the comment
+  comment.save
+
+  # `redirect` back to wherever we came from
+  redirect(back)
 end
 
 post '/signup' do
